@@ -13,9 +13,9 @@ type SlidingLimiter struct {
 	timestamps  []time.Time
 }
 
-func NewSlidingLimiter(maxRequest int, window time.Duration) *SlidingLimiter {
+func NewSlidingLimiter(maxRequests int, window time.Duration) *SlidingLimiter {
 	return &SlidingLimiter{
-		maxRequests: maxRequest,
+		maxRequests: maxRequests,
 		window:      window,
 		timestamps:  make([]time.Time, 0),
 	}
