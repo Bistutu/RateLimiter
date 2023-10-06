@@ -5,6 +5,8 @@ import (
 	"time"
 
 	"github.com/golang/groupcache/lru"
+
+	"RateLimiter/sliding"
 )
 
 type Robot struct {
@@ -20,14 +22,14 @@ func NewRobot(size int) *Robot {
 	}
 }
 
-func (r *Robot) getOrCreateLimiter(groupID string) *SlidingLimiter {
+func (r *Robot) getOrCreateLimiter(groupID string) *sliding.SlidingLimiter {
 	r.limiterMu.Lock()
 	defer r.limiterMu.Unlock()
 	val, exists := r.cache.Get(groupID)
 	if exists {
-		return val.(*SlidingLimiter)
+		return val.(*sliding.SlidingLimiter)
 	}
-	limiter := NewSlidingLimiter(3, 1*time.Second)
+	limiter := sliding.NewSlidingLimiter(3, 1*time.Second)
 	r.cache.Add(groupID, limiter)
 	return limiter
 }

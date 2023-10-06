@@ -1,4 +1,4 @@
-package main
+package sliding
 
 import (
 	"sync"
@@ -40,22 +40,4 @@ func (l *SlidingLimiter) Allow() bool {
 		return true
 	}
 	return false
-}
-
-func main() {
-
-	limiter := NewSlidingLimiter(1, 1*time.Second) // 创建一个新的滑动窗口限流器，每秒允许5个请求
-
-	for i := 0; i < 100; i++ {
-		go func() {
-			if limiter.Allow() {
-				println(i, "Request allowed") // 请求被允许
-			} else {
-				println("Request denied") // 请求被拒绝
-			}
-		}()
-		time.Sleep(100 * time.Millisecond) // 每100毫秒发送一个请求
-	}
-
-	time.Sleep(2 * time.Second)
 }
